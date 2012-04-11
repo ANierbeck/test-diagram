@@ -16,11 +16,16 @@
 		<dependency>
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-core</artifactId>
-			<version>2.9.0</version>
+			<version>${camel.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-spring</artifactId>
+			<version>${camel.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-mail</artifactId>
 			<version>${camel.version}</version>
 		</dependency>
 		<!-- Spring Web -->
@@ -79,7 +84,7 @@
 
 	<build>
 		<plugins>
-						<plugin>
+			<plugin>
 				<groupId>fr.rmannibucau</groupId>
 				<artifactId>diagram-generator-maven-plugin</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
@@ -95,8 +100,8 @@
 				<configuration>
 					<input>${basedir}/src/main/resources/META-INF</input>
 					<view>false</view>
-					<width>480</width>
-					<height>640</height>
+					<width>640</width>
+					<height>480</height>
 					<output>target/diagram</output>
 					<type>camel</type>
 					<fileType>xml</fileType>

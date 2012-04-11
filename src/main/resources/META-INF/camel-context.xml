@@ -5,15 +5,35 @@
 	xsi:schemaLocation="http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-		<bean id="myBean" class="test.MyBean"/>
+	<import resource="classpath:applicationContext.xml" />
+
+	<bean id="myBean" class="test.MyBean"/>
 
 	<camel:camelContext trace="false"
 		xmlns="http://camel.apache.org/schema/spring">
+
+		<camel:endpoint id="fileEndpoint"
+			uri="file://[[watchDir]]?recursive=true&amp;move=[[archivedir]]/${file:name.noext}-${date:now:yyyy_MM_dd_HH_mm_ss}.${file:ext}&amp;moveFailed=[[archivedir]]/.ready-error/${file:name.noext}-${date:now:yyyyMMddHHmmssSSS}.${file:ext}&amp;delay=10000&amp;readLock=fileLock" />
+
+		<camel:endpoint id="mail"
+			uri="smtp://[[mailserver]]?password=[[pwd]]&amp;username=[[user]]" />
 
 		<camel:route>
 			<camel:from uri="direct:start"/>
 			<camel:bean ref="myBean"/>
 			<camel:to uri="log:trace"/>
+		</camel:route>
+
+		<camel:route>
+			<camel:from ref="fileEndpoint"/>
+			<camel:bean ref="myBean"/>
+			<camel:to uri="log:trace"/>
+		</camel:route>
+
+		<camel:route>
+			<camel:from uri="direct:mail"/>
+			<camel:bean ref="myBean"/>
+			<camel:to ref="mail"/>
 		</camel:route>
 
 	</camel:camelContext>
